@@ -10,13 +10,13 @@
 
 %%  (SECTION 1)
 %This is where we define the variables
- S = 10;               % # of Scatterers
- N = 100;               % # of Eve samples
- d = 0.10;             % Spacing between eavesdropper samples in wavelengths
+ S = 10;                % # of Scatterers
+ N = 100;               % # of Eve samples, # of sensors
+ d = 0.10;              % Spacing between eavesdropper samples in wavelengths
  q = 200;               % Number of samples ahead we attempt to predict
-Lamb = 1;             % Wavelength = 1 (distances are normalized to the wavelength)
-t = N+q;             % is the total number of readings
- P = 10;             % Number of complex sinusoids that make up the wireless channel
+ Lamb = 1;              % Wavelength = 1 (distances are normalized to the wavelength)
+ t = N+q;               % is the total number of readings plus estimated
+ P = 10;                % Number of complex sinusoids that make up the wireless channel
 %---------------------------------------------
 
 %% (SECTION 2)
@@ -33,7 +33,7 @@ tAS = 2*pi*rand(S, 1);
 
 %% (SECTION 3)
 % Generated signal for testing, generate what sensors N through N+q should
-% be seeing.
+% be seeing. Normalized Guassian noice has been added.
 % d is specified in terms of lambda, therefore, lambda = 1
 % This defines the point on the wave as determined by distance from center
 % of E. NOTE: This is the phase term not including any doppler effect
@@ -41,6 +41,12 @@ tAS = 2*pi*rand(S, 1);
 %AP is the Array Phase 
 %ASC is the Array of Scatterers Continued???
 %H is the full channel as seen by eavesdroper
+%noise has a P random t-element vectors are passed through the radial basis
+%transform and normalized.
+%ns is the added Guassian normalized noise 
+noise = rand(T,P);            %might need this http://www.mathworks.com/help/nnet/ref/normprod.html?searchHighlight=normalized%20random
+                              %Normalized dot product weight function
+ns = radbasn(noise);
 
 AP = repmat(pSE, [1,t]) + repmat(pAS, [1,t]) + kron(((2*pi)/Lamb)*d*((1:t)-(N+1)/2),cos(tSE));
 ASC = exp(1i*AP);
