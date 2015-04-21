@@ -16,7 +16,7 @@ function [] = PL_Security_Sim(S, N, d, q, p)
 % d = 0.10;             % Spacing between eavesdropper samples in wavelengths
 % q = 20;               % Number of samples ahead we attempt to predict
 Lamb = 1;             % Wavelength = 1 (distances are normalized to the wavelength)
-t = N+q;              % is the total number of readings
+t = N + q;              % is the total number of readings
 %---------------------------------------------
 
 %% (SECTION 2)
